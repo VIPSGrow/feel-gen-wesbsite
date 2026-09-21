@@ -1,0 +1,46 @@
+@media (min-width: 320px) {
+  .banner-ad .banner-content .categories {
+    font-size: 25px;
+  }
+
+  .display-4 {
+    font-size: calc(1.075rem + 2.7vw);
+  }
+
+  .display-5 {
+    font-size: calc(1.075rem + 2vw);
+  }
+
+  .copyright {
+    font-size: 12px;
+  }
+
+  .logo-font {
+    font-size: calc(1.075rem + 1vw);
+  }
+  .tag-line {
+    font-size: calc(0.75rem + 0.1vw);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .page-header {
+    background-image: url("/assets/static/banner.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20vh;
+    background-attachment: scroll;
+    background-position-x: left;
+    background-position-y: top;
+  }
+
+  .h4,
+  h4 {
+    font-size: calc(1rem + 0.3vw);
+  }
+
+  .lead {
+    font-size: 0.75rem;
+  }
+}

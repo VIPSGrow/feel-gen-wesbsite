@@ -1,0 +1,128 @@
+/* @import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+a {
+  text-decoration: none !important;
+}
+
+/* Prevent mobile initial white gap due to body/main height/scroll quirks */
+html,
+body {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.about-section .rounded-circle {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-section .lucide {
+  width: 15px;
+  height: 15px;
+}
+.card-text {
+  font-size: 12px;
+}
+.text-error {
+  color: red;
+}
+.post-content {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.form-check .form-check-input {
+  border: 1px solid #e6519b;
+}
+/* :global(.post-content img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+:global(.post-content h2),
+:global(.post-content h3) {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+} */
+
+.currency_icon {
+  width: 20px;
+  height: 20px;
+}
+/* Zoom animation for product cards */
+.zoom-effect {
+  transition: transform 0.4s ease-in-out;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Jab card ya link par hover hoga tab image zoom hogi */
+.product-item:hover .zoom-effect {
+  transform: scale(1.2); /* 10% Zoom increment */
+}
+
+.notification-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* bg-black/50 */
+}
+
+.dynamic-popup-container {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 1.5rem; /* rounded-3xl */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+  border: 1px solid #e5e7eb; /* basic border gray-200 */
+  width: 92vw; /* w-[92vw] */
+  max-width: 32rem; /* max-w-lg (512px) */
+  padding: 1.25rem; /* p-5 */
+  z-index: 10061;
+}
