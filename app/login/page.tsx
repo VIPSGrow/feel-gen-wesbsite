@@ -1,5 +1,5 @@
 import LoginStep from '@/componants/auth/LoginStep';
-import React from 'react'
+import { Suspense } from 'react';
 export const metadata = {
   title: 'Login | Feel Safe Sakhi Yojana',
   description:
@@ -17,15 +17,10 @@ export const metadata = {
   },
 };
 
-
-
-
 export default function LoginPage() {
-
-
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <LoginStep />
-    </>
+    </Suspense>
   );
 }
