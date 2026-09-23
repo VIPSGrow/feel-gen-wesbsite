@@ -278,7 +278,7 @@ const Navbar = () => {
             </div>
             <div className="col-lg-5">
               <form className="search-bar row bg-light p-2 rounded-4 mx-0" role="search" onSubmit={handleSearchSubmit}>
-                <div className="col-md-4">
+                {/* <div className="col-md-4">
                   <select
                     className="form-select border-0 bg-transparent shadow-none"
                     aria-label="Select Category"
@@ -294,8 +294,8 @@ const Navbar = () => {
                       <option key={index} value={cat.id}>{cat.name}</option>
                     ))}
                   </select>
-                </div>
-                <div className="col-md-7">
+                </div> */}
+                <div className="col-md-11">
                   <input
                     type="search"
                     className="form-control border-0 bg-transparent shadow-none"

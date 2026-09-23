@@ -305,7 +305,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
             <span className="fw-bold mb-2 badge bg-primary">
               {product.category?.name}
             </span>
-            <p className="lead mb-2">{product?.short_desc}</p>
+            <div className="lead mb-2" dangerouslySetInnerHTML={{ __html: product?.short_desc ?? '' }} />
             {/* <div>HSN Code - {product.hsn_code ?? 'N/A'}</div> */}
 
             <div className="">
@@ -462,8 +462,8 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
             </ul>
 
             <div className="tab-content border border-top-0 p-4">
-              <div className="tab-pane fade show active" id="description">
-                {product.description}
+              <div className="tab-pane fade show active" id="description" dangerouslySetInnerHTML={{ __html: product?.description ?? '' }} >
+                
               </div>
 
               <div className="tab-pane fade" id="spec">
