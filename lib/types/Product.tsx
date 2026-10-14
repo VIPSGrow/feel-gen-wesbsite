@@ -11,6 +11,7 @@ interface Product {
   f_image: string;
   g_images: string[];
   specs: Record<string, string>;
+  specifications?: Record<string, any> | null;
   category: Category;
   qty: number;
   hsn_code: string;
@@ -70,3 +71,6 @@ export type {
   ProductAttributes,
   ProVariant,
 };
+
+
+

@@ -420,7 +420,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
             </div>
             {/* Inventory info (optional) */}
             {(product?.distributor_stock === 0 && product?.admin_stock === 0) && <span className="badge bg-secondary">Out Of Stock</span>}
-            <div className="badge bg-secondary">Stock - {product.admin_stock + product.distributor_stock}</div>
+            <div className="badge bg-secondary">Stock</div>
             {/* <div>admin - {product.admin_stock}</div>
             <div>Distributor - {product.distributor_stock}</div> */}
           </div>
@@ -468,7 +468,15 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
 
               <div className="tab-pane fade" id="spec">
                 <table>
-                  <tr>
+                  
+                    {Object.entries(product?.specifications ?? {}).map(([key, value]) => (
+                      <tr key={key}>
+                        <th>{key} : </th>
+                        <td>{value}</td>
+                      </tr>
+                    ))
+                  }
+                  {/* <tr>
                     <th>Weight : </th>
                     <td>{product.weight}</td>
                   </tr>
@@ -483,7 +491,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                   <tr>
                     <th>Dimension Height : </th>
                     <td>{product.dimension_height} {product.dimension_unit}</td>
-                  </tr>
+                  </tr> */}
                 </table>
               </div>
 

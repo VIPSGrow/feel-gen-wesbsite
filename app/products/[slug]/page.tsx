@@ -162,7 +162,8 @@ export default async function ProductPage({ params }: Props) {
     dimension_height: apiProduct.product.dimension_height || 'N/A',
     dimension_length: apiProduct.product.dimension_length || 'N/A',
     dimension_unit: apiProduct.product.dimension_unit || 'N/A',
-    dimension_width: apiProduct.product.dimension_width || 'N/A'
+    dimension_width: apiProduct.product.dimension_width || 'N/A',
+    specifications: apiProduct.product.specifications || {},
   };
 
   const attributes = apiProduct.product_attributes || [];
