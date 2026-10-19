@@ -106,9 +106,14 @@ const VerifyCompo = () => {
 
                                             <tr>
                                                 <th>PAN</th>
-                                                <td>{user.pan_no}</td>
+                                                <td>
+                                                    {user.pan_no ? user.pan_no.slice(0, -4).replace(/./g, 'X') + user.pan_no.slice(-4) : ''}
+                                                </td>
+
                                                 <th>Aadhaar</th>
-                                                <td>{user.aadhaar_no}</td>
+                                                <td>
+                                                    {user.aadhaar_no ? 'XXXX-XXXX-' + user.aadhaar_no.slice(-4) : ''}
+                                                </td>
                                             </tr>
 
 

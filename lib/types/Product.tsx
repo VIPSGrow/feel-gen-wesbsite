@@ -9,7 +9,7 @@ interface Product {
   discounted_price: number;
   rating: number;
   f_image: string;
-  g_images: string[];
+  g_image: string[];
   specs: Record<string, string>;
   specifications?: Record<string, any> | null;
   category: Category;

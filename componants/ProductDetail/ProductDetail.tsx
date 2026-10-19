@@ -279,21 +279,27 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
               )}
             </div>
             {/* Thumbnails */}
-            {(product.g_images || []).length > 0 && (
-              <div className="row mt-3 g-1">
-                {[product.f_image, ...product.g_images].map((img, idx) => (
+            {/* Thumbnails */}
+            {(product.g_image || []).length > 0 && (
+              <div className="row mt-3 g-2 g-images">
+                {[product.f_image, ...product.g_image].map((img, idx) => (
                   <div key={idx} className="col-2">
-                    <Image
-                      src={img}
-                      alt={`${product.name} thumbnail ${idx + 1}`}
-                      width={100}
-                      height={100}
-                      className={`img-fluid rounded cursor-pointer border ${selectedImage === img
-                        ? "border-success border-3"
-                        : "border-secondary"
+                    <div
+                      className={`position-relative w-100 border rounded overflow-hidden cursor-pointer ${selectedImage === img
+                          ? "border-success border-3"
+                          : "border-secondary"
                         }`}
+                      style={{ aspectRatio: "1/1" }}
                       onClick={() => setSelectedImage(img)}
-                    />
+                    >
+                      <Image
+                        src={img}
+                        alt={`${product.name} thumbnail ${idx + 1}`}
+                        fill
+                        className="p-1 object-fit-contain"
+                        sizes="(max-width: 768px) 20vw, 10vw"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -463,18 +469,18 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
 
             <div className="tab-content border border-top-0 p-4">
               <div className="tab-pane fade show active" id="description" dangerouslySetInnerHTML={{ __html: product?.description ?? '' }} >
-                
+
               </div>
 
               <div className="tab-pane fade" id="spec">
                 <table>
-                  
-                    {Object.entries(product?.specifications ?? {}).map(([key, value]) => (
-                      <tr key={key}>
-                        <th>{key} : </th>
-                        <td>{value}</td>
-                      </tr>
-                    ))
+
+                  {Object.entries(product?.specifications ?? {}).map(([key, value]) => (
+                    <tr key={key}>
+                      <th>{key} : </th>
+                      <td>{value}</td>
+                    </tr>
+                  ))
                   }
                   {/* <tr>
                     <th>Weight : </th>

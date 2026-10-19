@@ -146,7 +146,7 @@ export default async function ProductPage({ params }: Props) {
     f_image: apiProduct.product.f_image
       ? `${apiProduct.product.f_image}`
       : "/assets/product/sanitory_pad.png",
-    g_images: (apiProduct.product.g_images || []).map((img) => `${img}`),
+    g_image: (apiProduct.product.g_image || []).map((img) => `${img}`),
     specs: apiProduct.product.specs || {},
     category: (apiProduct.category as Category) || {
       id: 0,

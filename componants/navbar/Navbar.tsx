@@ -263,7 +263,7 @@ const Navbar = () => {
       </div>
 
       {/* --- 2. DESKTOP HEADER (Same as before) --- */}
-      <header className="d-none d-xl-block">
+      <header className="sticky-top bg-white d-none d-xl-block">
         <div className="container-fluid">
           <div className="row py-3 border-bottom align-items-center">
             <div className="col-lg-3">
