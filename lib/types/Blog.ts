@@ -16,12 +16,18 @@ export interface BlogPost {
   created_at: string;
   updated_at: string;
   category_name?: string; // Optional, as API may not provide
-  comments: Array<{
+  comments?: Array<{
     id?: string;
     content?: string;
     author?: string;
     created_at?: string;
   }>;
+  relatedProducts?: RelatedProduct[];
+}
+
+export interface BlogDetail {
+  post: BlogPost;
+  comments: NonNullable<BlogPost["comments"]>;
   relatedProducts: RelatedProduct[];
 }
 
@@ -30,5 +36,5 @@ export interface BlogResponse {
   data:
     | BlogPost[]
     | BlogPost
-    | { post: BlogPost; relatedProducts: RelatedProduct[] };
+    | BlogDetail;
 }

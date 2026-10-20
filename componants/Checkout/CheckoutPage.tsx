@@ -64,6 +64,15 @@ const CheckoutPage = () => {
   });
   const [couponCode, setCouponCode] = useState("");
   const [couponApplying, setCouponApplying] = useState(false);
+  const [availableCoupons, setAvailableCoupons] = useState<any[]>([]);
+
+  useEffect(() => {
+    const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";    
+    fetch(`${base}/api/coupons/public`)
+      .then((r) => r.json())
+      .then((j) => setAvailableCoupons(Array.isArray(j?.data) ? j.data : []))
+      .catch(() => setAvailableCoupons([]));
+  }, []);
   const [couponError, setCouponError] = useState("");
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
   const [couponAppliedCode, setCouponAppliedCode] = useState<string>("");
@@ -1070,6 +1079,38 @@ const CheckoutPage = () => {
                                 {couponApplying ? "Applying..." : "Apply"}
                               </button>
                             </div>
+
+                            {availableCoupons.length > 0 && !couponAppliedCode && (
+                              <div className="mt-3">
+                                <div className="small fw-bold text-muted mb-2">Available offers</div>
+                                <div style={{ maxHeight: 220, overflowY: "auto" }} className="pe-1">
+                                {availableCoupons.map((c: any) => (
+                                  <div
+                                    key={c.id}
+                                    className="d-flex align-items-center justify-content-between border rounded-3 p-2 mb-2"
+                                  >
+                                    <div className="small">
+                                      <div className="fw-bold">{c.display_title || c.code}</div>
+                                      {c.display_description && (
+                                        <div className="text-muted">{c.display_description}</div>
+                                      )}
+                                      <span className="badge bg-light text-dark border">{c.code}</span>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary btn-sm"
+                                      onClick={() => {
+                                        setCouponCode(c.code);
+                                        setCouponError("");
+                                      }}
+                                    >
+                                      Use
+                                    </button>
+                                  </div>
+                                ))}
+                                </div>
+                              </div>
+                            )}
 
                             {couponAppliedCode && couponDiscountAmount > 0 && !couponError && (
                               <div className="d-flex align-items-center justify-content-between gap-2 mt-3">

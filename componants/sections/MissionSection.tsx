@@ -77,29 +77,60 @@ const MissionSection = () => {
                 </div>
 
                 {/* --- Empowerment Section (Sakhi Yojna) --- */}
-                <div className="bg-light p-4 p-md-5 rounded-5 border border-primary-subtle " data-aos="zoom-in">
-                    <div className="row g-4 align-items-center">
-                        <div className="col-md-12 text-center mb-4">
-                            <h3 className="display-6 fw-bold">Empowering Bharat: Feel Safe Sakhi Yojna</h3>
-                            <p className="text-muted">At Feel Safe Pvt. Ltd., our vision goes beyond hygiene. We are committed to the national mission of "Vocal for Local" and building an "Atmanirbhar Bharat".</p>
-                        </div>
-                        <div className="col-md-4 text-center">
-                            <div className="mb-3"><Users size={48} className="text-primary" /></div>
-                            <h5>Vocal for Local</h5>
-                            <p className="small">Proudly made in Bharat, supporting local communities and local growth.</p>
-                        </div>
-                        <div className="col-md-4 text-center border-start border-end border-primary-subtle">
-                            <div className="mb-3"><Heart size={48} className="text-primary" /></div>
-                            <h5>Atmanirbhar Bharat</h5>
-                            <p className="small">Fostering independence by empowering women to become self-reliant leaders.</p>
-                        </div>
-                        <div className="col-md-4 text-center">
-                            <div className="mb-3"><Award size={48} className="text-primary" /></div>
-                            <h5>A Shared Mission</h5>
-                            <p className="small">Every Sakhi is a step towards a stronger, healthier, and more empowered India.</p>
-                        </div>
-                        <div className="col-12 mt-4 text-center">
-                            <p className="fst-italic text-muted">"Through our Feel Safe Sakhi Yojna, we are creating a powerful network of women entrepreneurs. We don't just provide a product; we provide a source of income and a path to financial independence."</p>
+
+            </div>
+            <div
+                className="py-5 d-flex align-items-center justify-content-center"
+                style={{
+                    backgroundImage: "url('/assets/images/empower.jpeg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundAttachment: "fixed",
+                    minHeight: "80vh"
+                }}
+            >
+                <div className="container">
+                    <div
+                        className="px-4 py-4 p-md-5 rounded-5 border border-white border-opacity-25 shadow-lg"
+                        data-aos="zoom-in"
+                        style={{
+                            backgroundColor: "rgba(255, 255, 255, 0.56)", // Semi-transparent background
+                            backdropFilter: "blur(5px)",                 // Glassmorphism blur effect
+                            WebkitBackdropFilter: "blur(5px)",           // Safari support
+                        }}
+                    >
+                        <div className="row g-4 align-items-center">
+                            <div className="col-md-12 text-center mb-4">
+                                <h3 className="display-6 fw-bold text-dark">Empowering Bharat: Feel Safe Sakhi Yojna</h3>
+                                <p className="text-secondary mb-0">
+                                    At Feel Safe Pvt. Ltd., our vision goes beyond hygiene. We are committed to the national mission of "Vocal for Local" and building an "Atmanirbhar Bharat".
+                                </p>
+                            </div>
+
+                            <div className="col-md-4 text-center">
+                                <div className="mb-3"><Users size={48} className="text-primary" /></div>
+                                <h5 className="fw-semibold">Vocal for Local</h5>
+                                <p className="small text-secondary mb-0">Proudly made in Bharat, supporting local communities and local growth.</p>
+                            </div>
+
+                            <div className="col-md-4 text-center border-start border-end border-secondary border-opacity-25">
+                                <div className="mb-3"><Heart size={48} className="text-primary" /></div>
+                                <h5 className="fw-semibold">Atmanirbhar Bharat</h5>
+                                <p className="small text-secondary mb-0">Fostering independence by empowering women to become self-reliant leaders.</p>
+                            </div>
+
+                            <div className="col-md-4 text-center">
+                                <div className="mb-3"><Award size={48} className="text-primary" /></div>
+                                <h5 className="fw-semibold">A Shared Mission</h5>
+                                <p className="small text-secondary mb-0">Every Sakhi is a step towards a stronger, healthier, and more empowered India.</p>
+                            </div>
+
+                            <div className="col-12 mt-4 text-center">
+                                <p className="fst-italic text-dark mb-0 fw-medium">
+                                    "Through our Feel Safe Sakhi Yojna, we are creating a powerful network of women entrepreneurs. We don't just provide a product; we provide a source of income and a path to financial independence."
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

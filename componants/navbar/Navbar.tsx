@@ -4,10 +4,66 @@ import { useAuth } from "@/lib/contexts/AuthContext";
 import { useCart } from "@/lib/contexts/CartContext";
 import { Trash, Search, User, ShoppingCart, Menu } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import NotificationsBell from "@/componants/notifications/NotificationsBell";
 import { useNotifications } from "@/lib/notifications/useNotifications";
+
+// Sticky everywhere except home, where it becomes fixed only after the carousel scrolls out of view.
+const StickyHeader = ({
+  className = "",
+  wrapperClassName = "",
+  children,
+}: {
+  className?: string;
+  wrapperClassName?: string;
+  children: React.ReactNode;
+}) => {
+  const isHome = usePathname() === "/";
+  const [stuck, setStuck] = useState(false);
+  const [height, setHeight] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!isHome) return;
+    const onScroll = () => {
+      const carousel = document.getElementById("home-carousel");
+      const pastCarousel = carousel
+        ? carousel.getBoundingClientRect().bottom <= 0
+        : window.scrollY > window.innerHeight * 0.6;
+      if (!pastCarousel && headerRef.current) {
+        setHeight(headerRef.current.offsetHeight);
+      }
+      setStuck(pastCarousel);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [isHome]);
+
+  const isStuck = isHome && stuck;
+
+  return (
+    // Wrapper carries the sticky behaviour (a sticky child can't escape its parent) and keeps
+    // the header's space so content doesn't jump when it turns fixed on home
+    <div
+      className={`${wrapperClassName} ${!isHome ? "sticky-top" : ""}`}
+      style={isStuck ? { minHeight: height } : undefined}
+    >
+      <header
+        ref={headerRef}
+        className={`${className} ${isStuck ? "position-fixed top-0 start-0 w-100 shadow-sm" : ""}`}
+        style={isStuck ? { zIndex: 1030 } : undefined}
+      >
+        {children}
+      </header>
+    </div>
+  );
+};
 
 
 
@@ -263,7 +319,7 @@ const Navbar = () => {
       </div>
 
       {/* --- 2. DESKTOP HEADER (Same as before) --- */}
-      <header className="sticky-top bg-white d-none d-xl-block">
+      <StickyHeader wrapperClassName="d-none d-xl-block" className="bg-white">
         <div className="container-fluid">
           <div className="row py-3 border-bottom align-items-center">
             <div className="col-lg-3">
@@ -411,10 +467,10 @@ const Navbar = () => {
             </div>
           </nav>
         </div>
-      </header>
+      </StickyHeader>
 
       {/* --- 3. MOBILE HEADER (Same as before) --- */}
-      <header className="sticky-top bg-white border-bottom d-block d-xl-none py-2">
+      <StickyHeader wrapperClassName="d-block d-xl-none" className="bg-white border-bottom py-2">
         <div className="container-fluid">
           <div className="row align-items-center">
             <div className="col-3">
@@ -455,7 +511,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </header>
+      </StickyHeader>
     </>
   );
 };

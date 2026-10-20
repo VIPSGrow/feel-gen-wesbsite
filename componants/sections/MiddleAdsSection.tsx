@@ -19,10 +19,12 @@ const MiddleAdsSection = () => {
                 >
                   <div className="banner-content p-md-5 p-4">
                     <div className="categories fs-5 fw-bold">
-                      Earn Passive Income
+                      Feel Safe 
                     </div>
-                    <h3 className="banner-title">Build Your 7-Level Empire</h3>
-                    <p>Big results come from simple, repeatable actions. You do not need to sponsor dozens of people to build a sustainable organization. By starting with just 2 direct partners and helping them duplicate the process, you unlock commission depth across 7 full generations.</p>
+                    <h3 className="banner-title">Empower Sakhis. Build Leaders. Grow Together.</h3>
+                    <p>Sakhis play a vital role in expanding the Feel Safe community by promoting products, supporting team members, and developing new leaders.</p>
+                    <p> Benefits: Eligible generation-based overrides, performance-linked bonuses, leadership development, and long-term growth opportunities as per the plan rules.</p>
+                    <p>Feel Safe – Empowering Every Sakhi Towards Self-Reliance!</p>
                     <Link href="/become-distributor" className="btn btn-dark text-uppercase">
                       Start Earning
                     </Link>
@@ -40,10 +42,13 @@ const MiddleAdsSection = () => {
                 >
                   <div className="banner-content p-md-5 p-4">
                     <div className="categories fs-5 fw-bold">
-                      Daily Essentials, Daily Profits
+                      Daily Essentials, Growing Income
                     </div>
                     <h3 className="banner-title">Feel Safe, Live Free</h3>
-                    <p>Share premium hygiene products everyone needs. Turn every diaper and pad purchase in your network into monthly commissions.</p>
+                    <p>Promote everyday hygiene products and earn eligible commissions through sales.</p>
+                    <p>
+                      Join Feel Safe Sakhi Yojna Today! Register Now and Take Your First Step Towards Financial Independence.
+                    </p>
                     <Link href="https://panel.feelsafeco.in/signup" target="_blank" className="btn btn-dark text-uppercase me-2">
                       Join Now
                     </Link>

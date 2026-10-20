@@ -13,11 +13,7 @@ const DownloadApkSection = () => {
             <div className="col-md-6 mx-auto  py-4 px-5 rounded-5 downloadCardApk" data-aos="fade-in-up" style={{ border: "1px solid white" }}>
               <h2 className="mb-2 text-light" data-aos="zoom-in" data-aos-duration="1000">Shop & Earn with the Feel Safe App</h2>
               <p data-aos="zoom-in-up" className="text-light">
-                Carry your business in your pocket. Use the Feel Safe App to
-                order your monthly essentials in seconds and track your
-                10-level matrix earnings in real-time. Whether you’re a busy
-                parent or a growing entrepreneur, staying protected and
-                profitable has never been easier.
+                Carry your business in your pocket. Order your monthly essentials in seconds and track your multi-generation team earnings in real-time. Build without limits—whether you’re a busy parent or an ambitious entrepreneur, staying protected and profitable has never been easier.
               </p>
               <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3" data-aos="zoom-in-up">
                 {/* App Store Button */}

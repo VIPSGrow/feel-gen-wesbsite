@@ -9,14 +9,17 @@ const externalLoginUrl = "https://panel.feelsafeco.in/signin";
 const faqs = [
     {
         q: "Who can apply to become a distributor?",
-        a: `The Feel Safe Sakhi Yojna: Exclusively for Women
-Our Sakhi Yojna is a specialized initiative dedicated solely to women’s empowerment.We believe in creating leaders at the grassroots level.
+        a: `Feel Safe Sakhi Yojna – Empowering Everyone
 
-            Women - Only Initiative: This program is exclusively designed for women who wish to become financially independent and lead the hygiene revolution in their communities.
+The Feel Safe Sakhi Yojna is an inclusive initiative focused on hygiene awareness, entrepreneurship, and financial independence. We aim to create business opportunities for individuals who want to grow with Feel Safe and make a positive difference in their communities.
 
-Exclusive Territory Mapping: To ensure your business growth, each Sakhi is allotted a specific work area based on their Location and PIN Code.
+<br><b>Open to Everyone:</b> Women and men can join as Sakhis or Distributors and participate in the Feel Safe growth journey.
 
-Territory Protection: Once an area is assigned to a Sakhi, no other distributor or partner can be onboarded for that specific location.This "Area Lock" policy ensures you have zero internal competition and maximum earning potential.`,
+<br><b>No Area Restrictions:</b> You can join and promote Feel Safe products from any location. There are no PIN code restrictions or locked territories.
+
+<br><b>Equal Growth Opportunities:</b> Every eligible Sakhi and Distributor can build customer relationships, grow their business, and earn applicable commissions through qualifying product sales, as per the company's policies.
+
+<br><b>Feel Safe – Empowering People, Creating Opportunities, Growing Together!</b>`,
     },
     {
         q: "Is there any form submission on this page?",

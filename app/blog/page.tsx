@@ -2,6 +2,7 @@ import { getBlogs } from '@/lib/blogApi';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/types/Blog';
+import { getBlogHref } from '@/lib/blogApi';
 
 export const metadata = {
   title: 'Blog | Feel Safe',
@@ -69,11 +70,12 @@ export default async function BlogPage() {
           <div className="row g-4">
             {blogs.map((blog) => {
               const excerpt = blog.content.length > 150 ? blog.content.slice(0, 150) + '...' : blog.content;
+              const blogHref = getBlogHref(blog);
               return (
                 <div key={blog.id} className="col-lg-4 col-md-6">
                   <article className="card border-0 shadow-sm hover-shadow">
                     <div className="image-holder zoom-effect position-relative">
-                      <Link href={`/blog/${blog.slug}`}>
+                      <Link href={blogHref}>
                         <Image
                           src={
                             blog.featured_image && !blog.featured_image.startsWith('http')
@@ -93,12 +95,12 @@ export default async function BlogPage() {
                         <small className="text-muted">{formatDate(blog.created_at)}</small>
                       </div>
                       <h3 className="card-title h5 mt-auto">
-                        <Link href={`/blog/${blog.slug}`} className="text-decoration-none text-dark">
+                        <Link href={blogHref} className="text-decoration-none text-dark">
                           {blog.title}
                         </Link>
                       </h3>
                       <p className="text-muted flex-grow-1 mt-2">{excerpt}</p>
-                      <Link href={`/blog/${blog.slug}`} className="btn btn-outline-primary mt-3">
+                      <Link href={blogHref} className="btn btn-outline-primary mt-3">
                         Read More
                       </Link>
                     </div>
@@ -112,4 +114,3 @@ export default async function BlogPage() {
     </section>
   );
 }
-

@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getBlogBySlug } from '@/lib/blogApi';
 import Image from 'next/image';
-import { BlogPost, RelatedProduct } from '@/lib/types/Blog';
+import { BlogDetail, RelatedProduct } from '@/lib/types/Blog';
 import { date_formate } from '@/lib/constantFunction';
+import TrendingProSection from '@/componants/sections/TrendingProSection';
 
 // 1. Updated Props to reflect that params is a Promise
 interface Props {
@@ -83,7 +84,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function BlogPostPage({ params }: Props) {
     // 3. Await the params
     const { slug } = await params;
-    const blog: BlogPost | null = await getBlogBySlug(slug);
+    const blog: BlogDetail | null = await getBlogBySlug(slug);
 
     if (!blog) {
         notFound();
@@ -177,8 +178,13 @@ export default async function BlogPostPage({ params }: Props) {
                                 )}
                             </div>
 
+                                <div className=" border-top">
+                                    <TrendingProSection title='Our Products'/>
+                                </div>        
+
+
                             {/* Related Products */}
-                            {blog.relatedProducts?.length > 0 && (
+                            {/* {blog.relatedProducts?.length > 0 && (
                                 <div className="related-products pt-4 border-top">
                                     <h4>Related Products</h4>
                                     <div className="row g-4 mt-3">
@@ -186,13 +192,17 @@ export default async function BlogPostPage({ params }: Props) {
                                             <div key={product.id} className="col-lg-3 col-md-4 col-sm-6">
                                                 <a href={`/products/${product.slug}`} className="text-decoration-none">
                                                     <div className="product-preview card h-100 border-0 shadow-sm hover-lift">
-                                                        <div className="position-relative overflow-hidden rounded-top">
+                                                        <div
+                                                            className="position-relative overflow-hidden rounded-top bg-white"
+                                                            style={{ height: '220px' }}
+                                                        >
                                                             <Image
                                                                 src={product.f_image?.startsWith('http') ? product.f_image :
                                                                     `/assets/product/${product.f_image || 'placeholder.jpg'}`}
                                                                 alt={product.name}
                                                                 fill
-                                                                className="object-cover position-relative"
+                                                                className="position-relative"
+                                                                style={{ objectFit: 'contain', padding: '12px' }}
                                                                 sizes="(max-width: 768px) 100vw, 25vw"
                                                             />
                                                         </div>
@@ -205,7 +215,7 @@ export default async function BlogPostPage({ params }: Props) {
                                         ))}
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
-import { getBlogs } from '@/lib/blogApi';
+import { getBlogHref, getBlogs } from '@/lib/blogApi';
 import { BlogPost } from '@/lib/types/Blog';
 import { Calendar } from "lucide-react";
 
@@ -83,61 +83,57 @@ const RecentBlogSection = () => {
               className="d-flex flex-nowrap gap-3 blog-slider overflow-auto pb-3"
               style={{ scrollSnapType: "x mandatory" }}
             >
-              {blogs.map((blog, index) => (
-                <div
-                  className="flex-shrink-0 blog-card"
-                  style={{
-                    minWidth: "100%",
-                    maxWidth: "100%",
-                    scrollSnapAlign: "start",
-                  }}
-                  key={blog.id}
-                >
-                  <article className="post-item card border-0 shadow-sm h-100">
-                    <div className="image-holder position-relative overflow-hidden" style={{ height: '250px' }}>
-                      <Link href={`/blog/${blog.slug}`}>
-                        <Image
-                          src={blog.featured_image && !blog.featured_image.startsWith('http')
-                            ? `/assets/images/blog/${blog.featured_image}`
-                            : (blog.featured_image || '/assets/images/post-thumb-1.jpg')}
-                          alt={blog.title}
-                          fill // This replaces fixed width/height to fill the parent container
-                          className="object-cover transition-transform duration-300 zoom-effect"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </Link>
-                    </div>
-                    <div className="card-body d-flex flex-column p-3">
-                      <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center flex-shrink-0">
-                        <div className="meta-date">
-                          <Calendar size={16} />
-                          {/* <svg width="16" height="16">
-                            <use xlinkHref="#calendar"></use>
-                          </svg> */}
-                          {formatDate(blog.created_at)}
+              {blogs.map((blog) => {
+                const blogHref = getBlogHref(blog);
+                return (
+                  <div
+                    className="flex-shrink-0 blog-card"
+                    style={{
+                      minWidth: "100%",
+                      maxWidth: "100%",
+                      scrollSnapAlign: "start",
+                    }}
+                    key={blog.id}
+                  >
+                    <article className="post-item card border-0 shadow-sm h-100">
+                      <div className="image-holder position-relative overflow-hidden" style={{ height: '250px' }}>
+                        <Link href={blogHref}>
+                          <Image
+                            src={blog.featured_image && !blog.featured_image.startsWith('http')
+                              ? `/assets/images/blog/${blog.featured_image}`
+                              : (blog.featured_image || '/assets/images/post-thumb-1.jpg')}
+                            alt={blog.title}
+                            fill
+                            className="object-cover transition-transform duration-300 zoom-effect"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </Link>
+                      </div>
+                      <div className="card-body d-flex flex-column p-3">
+                        <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center flex-shrink-0">
+                          <div className="meta-date">
+                            <Calendar size={16} />
+                            {formatDate(blog.created_at)}
+                          </div>
+                          <div className="meta-categories">
+                            {blog.category_name}
+                          </div>
                         </div>
-                        <div className="meta-categories">
-
-                          {/* <svg width="16" height="16">
-                            <use xlinkHref="#category"></use>
-                          </svg> */}
-                          {blog.category_name}
+                        <div className="post-header flex-grow-1 d-flex flex-column">
+                          <h3 className="post-title flex-grow-1">
+                            <Link href={blogHref} className="text-decoration-none text-dark">
+                              {blog.title}
+                            </Link>
+                          </h3>
+                          <p className="text-muted small mt-0 mb-0">
+                            {blog.content.length > 120 ? blog.content.slice(0, 120) + '...' : blog.content}
+                          </p>
                         </div>
                       </div>
-                      <div className="post-header flex-grow-1 d-flex flex-column">
-                        <h3 className="post-title flex-grow-1">
-                          <Link href={`/blog/${blog.slug}`} className="text-decoration-none text-dark">
-                            {blog.title}
-                          </Link>
-                        </h3>
-                        <p className="text-muted small mt-0 mb-0">
-                          {blog.content.length > 120 ? blog.content.slice(0, 120) + '...' : blog.content}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                </div>
-              ))}
+                    </article>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <style jsx>{`

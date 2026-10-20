@@ -1,3 +1,4 @@
+import HomeCarousel from "@/componants/sections/HomeCarousel";
 import HeroSection from "@/componants/sections/HeroSection";
 import CategorySection from "@/componants/sections/CategorySection";
 import NewlyArrivedSection from "@/componants/sections/NewlyArrivedSection";
@@ -14,7 +15,8 @@ import GenerationPlanSection from "@/componants/sections/GenerationPlanSection";
 export default function Home() {
   return (
     <>
-      <HeroSection />
+      <HomeCarousel />
+      {/* <HeroSection /> */}
       <TrendingProSection />
       <MissionSection />
       {/* <GenerationPlanSection /> */}
