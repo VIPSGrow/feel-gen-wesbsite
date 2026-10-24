@@ -99,7 +99,7 @@ export default async function BlogPage() {
                           {blog.title}
                         </Link>
                       </h3>
-                      <p className="text-muted flex-grow-1 mt-2">{excerpt}</p>
+                      <p className="text-muted flex-grow-1 mt-2" dangerouslySetInnerHTML={{ __html: excerpt }}></p>
                       <Link href={blogHref} className="btn btn-outline-primary mt-3">
                         Read More
                       </Link>
