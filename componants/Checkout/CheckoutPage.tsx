@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCart } from "@/lib/contexts/CartContext";
 import serverCallFuction, { formattedAmountCommas } from "@/lib/constantFunction";
@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Address } from "@/lib/types/Address";
 import type { VariantDetails } from "@/lib/types/Cart";
+import type { ProductApiResponse } from "@/lib/types/Product";
 import {
   getAddresses,
   addAddress,
@@ -26,8 +27,10 @@ interface CheckoutItem {
   product_name?: string;
   variant_sku?: string;
   variant_details: VariantDetails | null;
-  tax_data?: { percentage: string } | null;
+  tax_data?: { percentage: number | string } | null;
   f_image?: string;
+  unit_price?: number;
+  taxable_price?: number;
 }
 
 const CheckoutPage = () => {
@@ -36,12 +39,27 @@ const CheckoutPage = () => {
   const { cart, fetchCart, refreshCart } = useCart();
   const { user, isAuthenticated, setting, getSettingByKey } = useAuth() as any;
 
-  const dId = user?.distributor_info?.id || "";
+  const dId =
+    searchParams.get("distributor_id") ||
+    user?.distributor_info?.id ||
+    "";
 
   const productId = searchParams.get("productId");
   const variantIdParam = searchParams.get("variantId");
   const qtyParam = searchParams.get("qty") || "1";
   const slug = searchParams.get("slug") || "";
+  const isBuyNow = searchParams.get("mode") === "buynow";
+  const invalidBuyNowRequest =
+    isBuyNow &&
+    (!productId ||
+      !Number.isInteger(Number(productId)) ||
+      Number(productId) < 1 ||
+      !slug ||
+      !Number.isInteger(Number(qtyParam)) ||
+      Number(qtyParam) < 1 ||
+      (variantIdParam !== null &&
+        (!Number.isInteger(Number(variantIdParam)) ||
+          Number(variantIdParam) < 1)));
 
   const variantId = variantIdParam ? parseInt(variantIdParam) : null;
   const qty = parseInt(qtyParam) || 1;
@@ -50,7 +68,7 @@ const CheckoutPage = () => {
   const checkoutReturnPath = `/checkout${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
   const [singleItem, setSingleItem] = useState<CheckoutItem | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!invalidBuyNowRequest);
   const [cartError, setCartError] = useState("");
 
   const [formData] = useState({
@@ -78,9 +96,13 @@ const CheckoutPage = () => {
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
   const [couponAppliedCode, setCouponAppliedCode] = useState<string>("");
 
-  const [paymentMethod, setPaymentMethod] = useState<string>("razorpay");
+  const [paymentMethod, setPaymentMethod] = useState<string>(
+    isBuyNow && dId !== "" ? "cod" : "razorpay"
+  );
   const [orderLoading, setOrderLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    invalidBuyNowRequest ? "Could not load product details" : ""
+  );
 
   // Address logic
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -93,7 +115,7 @@ const CheckoutPage = () => {
   const [isMobileSummaryOpen, setIsMobileSummaryOpen] = useState(false);
 
   // State/City validation loaders & array states
-  const [statesLoading, setStatesLoading] = useState(false);
+  const [statesLoading, setStatesLoading] = useState(true);
   const [citiesLoading, setCitiesLoading] = useState(false);
   const [states, setStates] = useState<Array<{ id: number | string; name: string }>>([]);
   const [cities, setCities] = useState<Array<{ id: number | string; name: string }>>([]);
@@ -116,7 +138,7 @@ const CheckoutPage = () => {
   const [addressesLoading, setAddressesLoading] = useState(true);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
-  const isCartMode = !!(cart && cart.items.length > 0);
+  const isCartMode = !isBuyNow && !!(cart && cart.items.length > 0);
   const displayItems = isCartMode
     ? cart!.items
     : singleItem
@@ -131,18 +153,46 @@ const CheckoutPage = () => {
   const totalAmount = isCartMode
     ? Number(cart!.total)
     : singleItem
-      ? singleItem.price * singleItem.quantity
+      ? singleItem.price * singleItem.quantity +
+        (singleItem.tax_data
+          ? (singleItem.price *
+              singleItem.quantity *
+              Number(singleItem.tax_data.percentage)) /
+            100
+          : 0)
       : 0;
 
   const tax_amount = isCartMode
     ? Number(cart!.total_tax)
     : singleItem
       ? singleItem.tax_data
-        ? (singleItem.price * parseFloat(singleItem.tax_data.percentage)) / 100
+        ? (singleItem.price *
+            singleItem.quantity *
+            Number(singleItem.tax_data.percentage)) /
+          100
         : 0
       : 0;
 
   const [shippingChargeFromSetting, setShippingChargeFromSetting] = useState<number>(0);
+
+  const fetchStates = useCallback(async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/static/states`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await res.json();
+      if (json?.status && Array.isArray(json?.data)) {
+        setStates(json.data);
+      } else if (Array.isArray(json)) {
+        setStates(json);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setStatesLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const loadShipping = async () => {
@@ -164,7 +214,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     const loadCart = async () => {
       try {
-        await fetchCart();
+        if (!isBuyNow) await fetchCart();
       } catch (err) {
         console.error("Cart load error:", err);
         setCartError("Cart unavailable - proceeding with empty cart");
@@ -173,48 +223,104 @@ const CheckoutPage = () => {
       }
     };
     loadCart();
-    fetchStates();
-  }, []);
+    void Promise.resolve().then(fetchStates);
+  }, [fetchCart, fetchStates, isBuyNow]);
 
   useEffect(() => {
-    if (!isCartMode && productId && slug) {
+    if (!invalidBuyNowRequest && !isCartMode && productId && slug) {
       const fetchItem = async () => {
+        setLoading(true);
         try {
           const res = await serverCallFuction(
             "GET",
             `api/products/product-detail/${slug}${dId ? `?distributor_id=${dId}` : ""}`
           );
-          const data = res as any;
-          if (data?.success && data.data) {
-            const apiProduct = data.data;
-            let unitPrice =
-              (apiProduct.product as any)?.discounted_price ||
-              (apiProduct.product as any)?.base_price ||
-              0;
-            if (variantId) {
-              const v = apiProduct.variants?.find(
-                (vv: any) => vv.id === variantId
-              );
-              if (v) unitPrice = v.price;
-            }
-            setSingleItem({
-              product_id: parseInt(productId),
-              variation_id: variantId ? variantId.toString() : null,
-              quantity: qty,
-              price: unitPrice,
-              product_name:
-                (apiProduct.product as any)?.name || `Product #${productId}`,
-              variant_sku: variantId ? "Variant" : "Standard",
-              variant_details: null,
-            });
+          const data = res as {
+            success?: boolean;
+            data?: ProductApiResponse;
+          };
+          if (!data?.success || !data.data?.product) {
+            throw new Error("Product details unavailable");
           }
+
+          const apiProduct = data.data;
+          const selectedVariant = variantId
+            ? apiProduct.variants?.find(
+                (variant) => Number(variant.id) === variantId
+              )
+            : null;
+          if (isBuyNow && variantIdParam !== null && !selectedVariant) {
+            throw new Error("Selected product variant is unavailable");
+          }
+          if (isBuyNow && selectedVariant && selectedVariant.stock <= 0) {
+            throw new Error("Selected product variant is out of stock");
+          }
+          const product = apiProduct.product;
+          if (isBuyNow && Number(productId) !== product.id) {
+            throw new Error("Product details do not match this checkout");
+          }
+          const unitPrice = selectedVariant?.price ??
+            (product.discounted_price > 0
+              ? product.discounted_price
+              : product.base_price);
+          const taxData = apiProduct.tax_data ?? product.tax_data ?? null;
+          const variantDetails = selectedVariant
+            ? {
+                id: selectedVariant.id,
+                price: selectedVariant.price,
+                stock: selectedVariant.stock,
+                attributes: selectedVariant.attr_combinations.map(
+                  (combination) => ({
+                    attribute_name:
+                      apiProduct.product_attributes?.find(
+                        (attribute) =>
+                          attribute.id === combination.attr_id
+                      )?.name || "Option",
+                    value: combination.value,
+                  })
+                ),
+              }
+            : null;
+
+          setSingleItem({
+            product_id: product.id,
+            variation_id: selectedVariant ? String(selectedVariant.id) : null,
+            quantity: qty,
+            price: Number(unitPrice),
+            unit_price: Number(unitPrice),
+            taxable_price:
+              Number(unitPrice) *
+              (1 + (taxData ? Number(taxData.percentage) / 100 : 0)),
+            product_name: product.name || `Product #${productId}`,
+            variant_sku: selectedVariant?.sku || "Standard",
+            variant_details: variantDetails,
+            tax_data: taxData,
+            f_image: product.f_image,
+          });
         } catch (err) {
-          setError("Could not load product details");
+          console.error("Product checkout load failed:", err);
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Could not load product details"
+          );
+        } finally {
+          setLoading(false);
         }
       };
       fetchItem();
     }
-  }, [isCartMode, productId, variantId, qty, slug, dId]);
+  }, [
+    invalidBuyNowRequest,
+    isBuyNow,
+    isCartMode,
+    productId,
+    variantId,
+    variantIdParam,
+    qty,
+    slug,
+    dId,
+  ]);
 
   // Fetch addresses
   useEffect(() => {
@@ -237,26 +343,6 @@ const CheckoutPage = () => {
     };
     fetchAddresses();
   }, []);
-
-  const fetchStates = async () => {
-    try {
-      setStatesLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/static/states`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const json = await res.json();
-      if (json?.status && Array.isArray(json?.data)) {
-        setStates(json.data);
-      } else if (Array.isArray(json)) {
-        setStates(json);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setStatesLoading(false);
-    }
-  };
 
   const fetchCities = async (stateId: number | string) => {
     try {
@@ -446,6 +532,8 @@ const CheckoutPage = () => {
     : null;
 
   useEffect(() => {
+    if (isBuyNow) return;
+
     if (dId === "") {
       setPaymentMethod("razorpay");
     } else {
@@ -459,7 +547,7 @@ const CheckoutPage = () => {
         setPaymentMethod("razorpay");
       }
     }
-  }, [cart, dId]);
+  }, [cart, dId, isBuyNow]);
 
   const handlePlaceOrder = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -525,7 +613,8 @@ const CheckoutPage = () => {
       coupon_code: couponAppliedCode || undefined,
       payment_method: paymentMethod,
       order_for: dId === "" ? "admin" : `distributor_${dId}`,
-      distributor_id: dId
+      distributor_id: dId,
+      buy_now: isBuyNow,
     };
 
     try {
@@ -539,7 +628,7 @@ const CheckoutPage = () => {
         if (paymentMethod === "razorpay") {
           await handlepayment(res);
         } else {
-          await refreshCart();
+          if (!isBuyNow) await refreshCart();
           const orderId = res.data?.order_id || res.order_id;
           router.push(`/orders/success/${orderId}`);
         }
@@ -569,16 +658,33 @@ const CheckoutPage = () => {
       return;
     }
 
+    // Releases the unpaid order (stock, coupon) when the payment is abandoned.
+    const cancelUnpaidOrder = async () => {
+      try {
+        await serverCallFuction("POST", "api/payment/cancel", { order_id: orderId });
+      } catch (err) {
+        console.error("Failed to cancel unpaid order:", err);
+      }
+      setError("Payment cancelled. Your order was not placed. You can try again.");
+    };
+
     if (!(window as any).Razorpay || !razorpayLoaded) {
       alert("Razorpay loading... Please wait");
+      await cancelUnpaidOrder();
       return;
     }
+
+    let paymentStarted = false;
 
     try {
       const order = await createRazorpayOrder(finalTotal, {
         receipt: `receipt_${orderId}_${Date.now()}`,
         order_id: orderId
       });
+      if (!order) {
+        await cancelUnpaidOrder();
+        return;
+      }
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_Sfdk41BOifNjN9",
         amount: order.amount,
@@ -592,13 +698,20 @@ const CheckoutPage = () => {
           contact: selectedAddress?.phone || formData.phone,
         },
         theme: { color: "#3399cc" },
+        modal: {
+          ondismiss: () => {
+            if (!paymentStarted) void cancelUnpaidOrder();
+          },
+        },
         handler: async (response: any) => {
+          paymentStarted = true;
           try {
             await verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             });
+            if (!isBuyNow) await refreshCart();
             router.push(`/orders/success/${orderId}`);
           } catch (err) {
             alert(`Payment failed: ${(err as Error).message}`);
@@ -611,6 +724,7 @@ const CheckoutPage = () => {
       paymentObject.open();
     } catch (error) {
       alert(`Error: ${(error as Error).message}`);
+      if (!paymentStarted) await cancelUnpaidOrder();
     }
   };
 
@@ -696,7 +810,11 @@ const CheckoutPage = () => {
                     </div>
 
                     <div className="text-center mt-4 text-muted small">
-                      <p>Your cart ({displayItems.length} items) will be saved and restored after sign in.</p>
+                      <p>
+                        {isBuyNow
+                          ? "Your selected product will be ready for checkout after sign in."
+                          : `Your cart (${displayItems.length} items) will be saved and restored after sign in.`}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -788,7 +906,7 @@ const CheckoutPage = () => {
                                           {item.variant_details?.attributes?.length ? (
                                             item.variant_details.attributes.map((attr: any, i: number) => (
                                               <small key={i} className="badge bg-primary text-white d-block mt-1">
-                                                {attr.attribute_name}: {attr.attribute_val}
+                                                {attr.attribute_name}: {attr.attribute_val || attr.value}
                                               </small>
                                             ))
                                           ) : null}
@@ -840,7 +958,7 @@ const CheckoutPage = () => {
                                 </div>
                                 <div className="text-end flex-shrink-0">
                                   <span className="small fw-medium">
-                                    ₹{Number(parseFloat(item.price || 0) * (item.quantity || item.qty || 1)).toFixed(2)}
+                                    ₹{Number(parseFloat(item.taxable_price || item.price || 0) * (item.quantity || item.qty || 1)).toFixed(2)}
                                   </span>
                                 </div>
                               </div>
@@ -991,13 +1109,13 @@ const CheckoutPage = () => {
                           {couponDiscountAmount > 0 && !couponError && (
                             <div className="d-flex justify-content-between mb-2 small text-secondary">
                               <span>Discount:</span>
-                              <span className="text-success fw-bold">−₹{formattedAmountCommas(couponDiscountAmount.toFixed(2))}</span>
+                              <span className="text-success fw-bold">−₹{formattedAmountCommas(couponDiscountAmount)}</span>
                             </div>
                           )}
 
                           <div className="d-flex justify-content-between align-items-center mb-4">
                             <span className="fw-bold h5 mb-0 text-dark">Total:</span>
-                            <span className="fw-bold h4 mb-0 text-primary">₹{formattedAmountCommas(finalTotal.toFixed(2))}</span>
+                            <span className="fw-bold h4 mb-0 text-primary">₹{formattedAmountCommas(finalTotal)}</span>
                           </div>
 
                           <div className="mb-4">

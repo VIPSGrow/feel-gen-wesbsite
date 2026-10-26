@@ -22,6 +22,7 @@ export interface CartItem {
   product_name: string;
   slug: string;
   f_image: string;
+  distributor_id?: number | null;
   variant_details: VariantDetails | null;
   tax_data: {
     id?: number;
@@ -35,4 +36,6 @@ export interface Cart {
   items: CartItem[];
   total_items: number;
   total: string | number;
+  subtotal?: string | number;
+  total_tax?: string | number;
 }

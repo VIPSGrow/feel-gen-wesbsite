@@ -189,44 +189,23 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     }
   };
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = () => {
     if (isOutOfStock) {
       setMessageType("error");
       setMessage("This variant is out of stock!");
       return;
     }
 
-    try {
-      const res = await addItemTyped(
-        product.id,
-        currentVariant ? currentVariant.id.toString() : null,
-        quantity,
-        taxablePrice,
-        dId,
-        product.name,
-        product.slug,
-        product.f_image,
-        currentVariant || undefined,
-        product.tax_data
-      );
-      if (res.status) {
-        router.push(`/checkout`);
-        // setMessageType("success");
-        // setMessage(`Added ${quantity} item(s) to cart!`);
-      } else {
-        setMessageType("error");
-        console.log("error - ", res);
+    const params = new URLSearchParams({
+      mode: "buynow",
+      productId: String(product.id),
+      qty: String(quantity),
+      slug: product.slug,
+    });
+    if (currentVariant) params.set("variantId", String(currentVariant.id));
+    if (dId !== null) params.set("distributor_id", String(dId));
 
-        if (res.message === "No token, authorization denied") {
-          setMessage("Please sign in to your account to add items to your cart.");
-        }
-
-      }
-    } catch (error) {
-      console.error("Add to cart failed:", error);
-      setMessageType("error");
-      setMessage("Failed to add to cart. Please try again.");
-    }
+    router.push(`/checkout?${params.toString()}`);
   }
 
 
