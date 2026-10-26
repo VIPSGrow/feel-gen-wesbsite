@@ -16,6 +16,7 @@ interface Slide {
 const SLIDES: Slide[] = [
   { image: "/assets/banner/slide1.webp", mobileImage: "/assets/banner/slide1_old.webp", alt: "Feel Safe", href: "/products" },  
   { image: "/assets/banner/slide2.webp", mobileImage: "/assets/banner/slide2_old.webp", alt: "Sanitary pads", href: "/products" },
+  { image: "/assets/banner/slide3.webp", mobileImage: "/assets/banner/slide3_old.webp", alt: "Sanitary pads", href: "/products" },
   // { image: "/assets/banner/night-pads.png", alt: "Night pads", href: "/products" },
   // { image: "/assets/banner/adult-diaper.png", alt: "Adult diaper", href: "/products" },
 ];
