@@ -80,14 +80,15 @@ const MissionSection = () => {
 
             </div>
             <div
-                className="py-5 d-flex align-items-center justify-content-center"
+                className="py-5 d-flex align-items-center justify-content-center empower_section"
                 style={{
-                    backgroundImage: "url('/assets/images/empower.jpeg')",
+                    backgroundImage: "url('/assets/images/empower_1.jpeg')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     backgroundAttachment: "fixed",
-                    minHeight: "80vh"
+                    minHeight: "80vh",
+                    position:'relative'
                 }}
             >
                 <div className="container">

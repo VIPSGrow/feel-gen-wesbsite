@@ -3,6 +3,7 @@ import { getBlogBySlug } from '@/lib/blogApi';
 import Image from 'next/image';
 import { BlogDetail, RelatedProduct } from '@/lib/types/Blog';
 import { date_formate } from '@/lib/constantFunction';
+import CommentForm from '@/componants/blog/CommentForm';
 import TrendingProSection from '@/componants/sections/TrendingProSection';
 
 // 1. Updated Props to reflect that params is a Promise
@@ -167,15 +168,16 @@ export default async function BlogPostPage({ params }: Props) {
                                 {blog.comments.length > 0 ? (
                                     blog.comments.map((comment, index) => (
                                         <div key={index} className="comment-item mb-4 p-3 bg-light rounded">
-                                            <p className="mb-2">{comment.content || 'N/A'}</p>
+                                            <p className="mb-2">{comment.comment_text || comment.content || 'N/A'}</p>
                                             <small className="text-muted">
-                                                {comment.author || 'Anonymous'} • {comment.created_at ? new Date(comment.created_at).toLocaleDateString() : 'N/A'}
+                                                {comment.user_full_name || comment.author || 'Anonymous'} • {comment.created_at ? new Date(comment.created_at).toLocaleDateString() : 'N/A'}
                                             </small>
                                         </div>
                                     ))
                                 ) : (
                                     <p className="text-muted">No comments yet!</p>
                                 )}
+                                <CommentForm postId={blog.post.id} />
                             </div>
 
                                 <div className=" border-top">

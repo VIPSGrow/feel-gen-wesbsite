@@ -9,6 +9,7 @@ import { APIResponse } from "@/lib/types/User";
 import TermsAndConditions from "../TermsCompo";
 import PrivacyCompo from "../PrivacyCompo";
 import Cookies from "js-cookie"; // Ensure Cookies is imported
+import { Eye, EyeClosed } from "lucide-react";
 
 interface FormData {
   phone: string;
@@ -279,6 +280,8 @@ export default function RegisterPage() {
     }
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <div className="bg-light min-vh-100 d-flex align-items-center py-5" style={{ paddingTop: "20px", paddingBottom: "20px" }}>
@@ -388,14 +391,31 @@ export default function RegisterPage() {
                         </div>
                         <div className="mb-4">
                           <label htmlFor="password" className="form-label fw-semibold">Password</label>
-                          <input
-                            type="password"
-                            className="form-control form-control-lg bg-light border-0 py-3"
-                            id="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            placeholder="Password"
-                          />
+                          <div className="position-relative w-100">
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              className="form-control form-control-lg bg-light border-0 py-3"
+                              id="password"
+                              value={formData.password}
+                              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                              placeholder="Password"
+                            />
+                            <button
+                              type="button"
+                              className="btn position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent text-secondary me-2"
+                              onClick={() => setShowPassword(!showPassword)}
+                              style={{ zIndex: 10, cursor: 'pointer' }}
+                            >
+                              {showPassword ? (
+                                /* Eye Slash Icon (Hide) */
+                                <Eye />
+
+                              ) : (
+                                /* Eye Icon (Show) */
+                                <EyeClosed />
+                              )}
+                            </button>
+                          </div>
                           <div className="form-text mt-2">
                             <small className={formData.password && formData.password.length >= 6 ? "text-success" : "text-muted"}>✓ Min 6 characters</small><br />
                             <small className={formData.password && /[0-9]/.test(formData.password) ? "text-success" : "text-muted"}>✓ At least 1 number</small><br />
@@ -404,14 +424,31 @@ export default function RegisterPage() {
                         </div>
                         <div className="mb-4">
                           <label htmlFor="confirmPassword" className="form-label fw-semibold">Confirm Password</label>
-                          <input
-                            type="password"
-                            className="form-control form-control-lg bg-light border-0 py-3"
-                            id="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                            placeholder="Confirm your password"
-                          />
+                          <div className="position-relative w-100">
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              className="form-control form-control-lg bg-light border-0 py-3"
+                              id="confirmPassword"
+                              value={formData.confirmPassword}
+                              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                              placeholder="Confirm your password"
+                            />
+                            <button
+                              type="button"
+                              className="btn position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent text-secondary me-2"
+                              onClick={() => setShowPassword(!showPassword)}
+                              style={{ zIndex: 10, cursor: 'pointer' }}
+                            >
+                              {showPassword ? (
+                                /* Eye Slash Icon (Hide) */
+                                <Eye />
+
+                              ) : (
+                                /* Eye Icon (Show) */
+                                <EyeClosed />
+                              )}
+                            </button>
+                          </div>
                         </div>
                       </>
                     )}

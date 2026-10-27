@@ -467,6 +467,15 @@ footer {
   top: 0;
   background: rgba(0, 0, 0, 0.589);
 }
+.empower_section::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.589);
+}
 
 .section-contactus {
   background-image: url("/assets/banners-ai/feel-brand.png");

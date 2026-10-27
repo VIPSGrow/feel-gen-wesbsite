@@ -175,6 +175,35 @@ const Navbar = () => {
                 </div>
               </li>
 
+              <li className="nav-item">
+                <a
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  data-bs-toggle="collapse"
+                  href="#mobileMediaCollapse"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Media
+                  <span className="small">▼</span> {/* or a Lucide Chevron icon */}
+                </a>
+
+                {/* This div is CLOSED by default because it doesn't have the "show" class */}
+                <div className="collapse" id="mobileMediaCollapse">
+                  <ul className="list-unstyled ps-3 border-start ms-2">
+                    <li data-bs-dismiss="offcanvas">
+                      <Link href="/media/gallery" className="nav-link py-1 text-primary fw-bold">
+                        Gallery
+                      </Link>
+                    </li>
+                    <li data-bs-dismiss="offcanvas">
+                      <Link href="/media/videos" className="nav-link py-1 text-primary fw-bold">
+                        Video
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
               <li data-bs-dismiss="offcanvas">
                 <Link href="/blog" className="nav-link">Blog</Link>
               </li>
@@ -456,6 +485,35 @@ const Navbar = () => {
                     ) : (
                       <li><span className="dropdown-item text-muted">No categories found</span></li>
                     )}
+                  </ul>
+                </li>
+
+                <li className="nav-link dropdown">
+                  <Link
+                    href="/products"
+                    className="nav-link text-dark p-0 dropdown-toggle"
+                    id="shopDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Media
+                  </Link>
+                  <ul className="dropdown-menu shadow border-0 mt-2 " aria-labelledby="shopDropdown" style={{ zIndex: 9999 }}>
+                    <li>
+                      <Link href="/media/gallery" className="dropdown-item fw-bold ">
+                        Gallery
+                      </Link>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+
+                    <li>
+                      <Link href="/media/videos" className="dropdown-item fw-bold ">
+                        Videos
+                      </Link>
+                    </li>
+
+                    
                   </ul>
                 </li>
                 {/* SHOP DROPDOWN END */}

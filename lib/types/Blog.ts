@@ -20,6 +20,8 @@ export interface BlogPost {
     id?: string;
     content?: string;
     author?: string;
+    comment_text?: string;
+    user_full_name?: string;
     created_at?: string;
   }>;
   relatedProducts?: RelatedProduct[];
