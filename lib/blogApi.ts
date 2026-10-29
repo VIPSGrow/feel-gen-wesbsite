@@ -8,13 +8,16 @@ export const getBlogs = async (): Promise<BlogPost[]> => {
     response.success &&
     Array.isArray(response.data)
   ) {
-    return response.data.filter(
+    console.log("blogs:", response);
+    const data = response.data.filter(
       (post): post is BlogPost =>
         typeof post === "object" &&
         post !== null &&
         "status" in post &&
         post.status === "published",
     );
+    console.log("blogs - data:", data);
+    return data;
   }
   console.error("Failed to fetch blogs:", response);
   return [];
