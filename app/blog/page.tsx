@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/types/Blog';
 import { getBlogHref } from '@/lib/blogApi';
+import { connection } from 'next/server';
 
 export const metadata = {
   title: 'Blog | Feel Safe',
@@ -46,6 +47,7 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function BlogPage() {
+  await connection();
   const blogs: BlogPost[] = await getBlogs();
 
   return (

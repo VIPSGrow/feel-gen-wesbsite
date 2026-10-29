@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import serverCallFuction, { date_formate, formattedAmount, formattedAmountCommas } from '@/lib/constantFunction';
 import { useAuth } from "@/lib/contexts/AuthContext";
 
-import { Loader2, ArrowLeft, Printer, Save, CheckCircle2, PackageCheck, Wallet, Download } from 'lucide-react';
+import { Loader2, ArrowLeft, Printer, Save, CheckCircle2, PackageCheck, Wallet, Download, X } from 'lucide-react';
 import Image from 'next/image';
 
 const ORDER_STATUSES = ['pending', 'accepted', 'packed', 'dispatched', 'delivered', 'cancelled'] as const;
@@ -384,13 +384,13 @@ const OrderDetail = () => {
                             if (!activeReturn && order.order_status === 'delivered' && !isSuperAdmin && isWithin30Days) {
                                 return (
                                     <div className="card border-warning bg-warning-subtle shadow-sm mb-4">
-                                        <div className="card-body py-3 px-4 d-flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                                            <div>
+                                        <div className="card-body pt-3 px-4 d-flex flex-col sm:flex-row items-start sm:items-center justify-center gap-3">
+                                            <div className=" w-75">
                                                 <div className="fw-bold text-warning-900 text-sm">Return Window Active</div>
                                                 <p className="small text-muted mb-0 mt-0.5">You can submit a standard return request parameters for this delivered order configuration.</p>
                                             </div>
-                                            <button className="btn btn-sm btn-primary px-3 shadow" disabled={actionLoading} onClick={() => setShowRequestReturnModal(true)}>Request Return</button>
                                         </div>
+                                        <button className="w-full btn btn-sm btn-primary px-3 m-2 shadow" disabled={actionLoading} onClick={() => setShowRequestReturnModal(true)}>Request Return</button>
                                     </div>
                                 );
                             }
@@ -568,7 +568,7 @@ const OrderDetail = () => {
                             <div className="modal-content border-0 rounded-4 shadow-lg p-3">
                                 <div className="modal-header border-0 pb-1 d-flex justify-content-between align-items-center">
                                     <h5 className="modal-title fw-bold text-dark h6 mb-0">Request Return</h5>
-                                    <button type="button" className="btn-close shadow-none p-1 border-0" onClick={() => setShowRequestReturnModal(false)}><X size={16} /></button>
+                                    <button type="button" className="btn-close shadow-none p-1 border-0" onClick={() => setShowRequestReturnModal(false)}></button>
                                 </div>
                                 <div className="modal-body space-y-4">
                                     <p className="text-muted small mb-3">Enter the reason for requesting this return allocation parameters validation.</p>

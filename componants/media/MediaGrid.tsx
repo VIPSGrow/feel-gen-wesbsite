@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Download } from "lucide-react";
 import { getMedia, type MediaItem, type MediaKind } from "@/lib/mediaApi";
 
 interface Props {
@@ -52,7 +53,7 @@ export default function MediaGrid({ kind, initialItems, total, limit }: Props) {
       <div className="row g-4">
         {items.map((item) => (
           <div key={item.id} className="col-lg-3 col-md-4 col-sm-6">
-            <div className="card border-0 shadow-sm h-100">
+            <div className="card border-0 shadow-sm h-100 position-relative">
               {isVideo ? (
                 <video
                   src={item.file_url}
@@ -78,14 +79,25 @@ export default function MediaGrid({ kind, initialItems, total, limit }: Props) {
                   />
                 </button>
               )}
-              {(item.title || item.description) && (
-                <div className="card-body">
-                  {item.title && <h3 className="h6 mb-1">{item.title}</h3>}
-                  {item.description && (
-                    <p className="text-muted small mb-0">{item.description}</p>
-                  )}
-                </div>
-              )}
+              <div className="card-body ">
+                {(item.title || item.description) && (
+                  <div className="mb-3">
+                    {item.title && <h3 className="h6 mb-1">{item.title}</h3>}
+                    {item.description && (
+                      <p className="text-muted small mb-0">{item.description}</p>
+                    )}
+                  </div>
+                )}
+                
+              </div>
+              <a
+                  href={item.file_url}
+                  download
+                  className="btn btn-primary btn-sm position-absolute top-0 end-0 m-3"
+                  aria-label={`Download ${item.title || (isVideo ? "video" : "image")}`}
+                >
+                  <Download size={16} className="" aria-hidden="true" />
+                </a>
             </div>
           </div>
         ))}
