@@ -125,9 +125,8 @@ const RecentBlogSection = () => {
                               {blog.title}
                             </Link>
                           </h3>
-                          <p className="text-muted small mt-0 mb-0">
-                            {blog.content.length > 120 ? blog.content.slice(0, 120) + '...' : blog.content}
-                          </p>
+                          {/* <div className="text-muted mt-0 mb-0" dangerouslySetInnerHTML={{ __html: blog.content.length > 120 ? blog.content.slice(0, 120) + '...' : blog.content }} /> */}
+
                         </div>
                       </div>
                     </article>

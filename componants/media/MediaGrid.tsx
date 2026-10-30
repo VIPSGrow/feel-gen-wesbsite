@@ -91,13 +91,13 @@ export default function MediaGrid({ kind, initialItems, total, limit }: Props) {
                 
               </div>
               <a
-                  href={item.file_url}
-                  download
-                  className="btn btn-primary btn-sm position-absolute top-0 end-0 m-3"
-                  aria-label={`Download ${item.title || (isVideo ? "video" : "image")}`}
-                >
-                  <Download size={16} className="" aria-hidden="true" />
-                </a>
+                href={`/api/media/download?url=${encodeURIComponent(item.file_url)}`}
+                download
+                className="btn btn-primary btn-sm position-absolute top-0 end-0 m-3"
+                aria-label={`Download ${item.title || (isVideo ? "video" : "image")}`}
+              >
+                <Download size={16} aria-hidden="true" />
+              </a>
             </div>
           </div>
         ))}
