@@ -12,6 +12,14 @@ import BreadkingBarier from "@/componants/sections/BreadkingBarier";
 import FeelSafeFeatures from "@/componants/sections/FeelSafeFeatures";
 import MissionSection from "@/componants/sections/MissionSection";
 import GenerationPlanSection from "@/componants/sections/GenerationPlanSection";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://feelsafeco.in/",
+  },
+};
+
 export default function Home() {
   return (
     <>

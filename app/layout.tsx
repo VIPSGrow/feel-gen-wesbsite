@@ -74,9 +74,6 @@ export const metadata: Metadata = {
     description: "Quality BIS certified hygiene products and empowerment opportunities across India.",
     images: ["/og-feelsafe-hygiene.jpg"],
   },
-  alternates: {
-    canonical: "https://feelsafeco.in/",
-  },
 };
 
 
